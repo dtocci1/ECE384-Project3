@@ -1,11 +1,10 @@
 %% ECE 384 Project 6.1
 %% Tyler Botelho, Lewis Brum, Matt LaVoie, Dylan Tocci
-clear;clc;
+clear;clc; close all;
 
 % 1. Generate six sequences of uniform random variables (length = 10,000) in the
 % range [−0.5, 0.5]. Each element in the ith sequence can be considered to be one
 % realization of the random variable Xi
-    xu1=-0.5:1:0.5;
     % Generate six sequences
     X1 = unifrnd(-0.5,0.5,[1 10000]); % Generate random uniform distribution with 10000 points
     X2 = unifrnd(-0.5,0.5,[1 10000]); % Generate random uniform distribution with 10000 points
@@ -37,10 +36,27 @@ clear;clc;
     plot(cY2Range,CDY2);
     xlim([-2.5,2.5])
     
-    mY1=mean(PDY1)
-    mY2=mean(PDY2)
-    varY1=var(PDY1)
-    varY2=var(PDY2)
+    mY1=mean(Y1)
+    mY2=mean(Y2)
+    varY1=var(Y1)
+    varY2=var(Y2)
+    
+    xRange = linspace(-2.5,2.5,10000);
+    Y1T = normpdf(xRange,mY1,sqrt(varY1));
+    Y2T = normpdf(xRange,mY2,sqrt(varY2));
+
+    % Plot theoretical PDF
+    figure(1)
+    subplot(2,2,1)
+    hold on;
+    plot(xRange,Y1T);
+    hold off;
+    subplot(2,2,3)
+    hold on;
+    plot(xRange,Y2T);
+    hold off;
+    
+    %Y2T = normcdf(x,mu,sd);
     
     
     
@@ -48,7 +64,20 @@ clear;clc;
 % 2. Generate 20 sequences of IID exponential random variables Xi using parameter
 % lambda = 0.5i for the ith sequence.
 
-
+    lambda = 0.5;
+    Y=0;
+    % summation from 1 to 20 of Xi
+    for i = 1:20
+        Y = Y + exprnd(lambda*i,1,10000); % generates [1:10000] vector Xi and sums it
+    end
+  
+    [PDY,CDY,pYRange, cYRange] = PdfCdf(Y,20) % generates PDF with 20 bins (looked best)
+    
+    figure(2)
+    subplot(2,1,1)
+    plot(pYRange, PDY)
+    subplot(2,1,2);
+    plot(cYRange, CDY)
 
 % 3. Successively convolve 50 Bernoulli PMFs (not the random variables). Choose
 % p = 0.8 for all of the PMFs. Plot and compare the shape (only the shape)

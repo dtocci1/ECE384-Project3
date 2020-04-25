@@ -107,8 +107,8 @@ clear;clc; close all;
     ylabel("Y");
 
    yRange = linspace(40,250,10000);
-   mY = mean(Y);
-   varY = var(Y);
+   mY = mean(Y)
+   varY = var(Y)
    
    YTP = normpdf(yRange,mY,sqrt(varY)); % Generate theoretical PDF
    YTC = normcdf(yRange,mY,sqrt(varY)); % Generate theoretical CDF
@@ -136,12 +136,13 @@ clear;clc; close all;
      end
     
     figure(3)
-    bar(1:50,bernDist)
+    bdRange = [1:50];
+    bar(bdRange,bernDist) % Plot Bernoulli distribution
     
     % INCORRECT BELOW
-    mBD = mean(bernDist)
-    varBD = var(bernDist)
-    bdRange = [1:50];
+    mBD = 40.5 % Guesses currently
+    varBD = 7.5
+    
     
     BDT = normpdf(bdRange,mBD,sqrt(varBD));
     figure(3)

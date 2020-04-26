@@ -5,6 +5,7 @@ clear;clc; close all;
 % 1. Generate six sequences of uniform random variables (length = 10,000) in the
 % range [−0.5, 0.5]. Each element in the ith sequence can be considered to be one
 % realization of the random variable Xi
+
     % Generate six sequences
     X1 = unifrnd(-0.5,0.5,[1 10000]); % Generate random uniform distribution with 10000 points
     X2 = unifrnd(-0.5,0.5,[1 10000]); % Generate random uniform distribution with 10000 points
@@ -46,20 +47,26 @@ clear;clc; close all;
     title("Measured versus Theoretical Y2 CDF")
     xlabel("y");
     ylabel("Y2");
-    xlim([-2.5,2.5])
+    xlim([-2.5,2.5])    
+
+    % Measure mean and variance for Y1 and Y2
+    meanY1=mean(Y1) % Mean is practically 0 for Y1 and Y2
+    meanY2=mean(Y2)
+    varianceY1=var(Y1) % Variance is 0.5 for Y1
+    varianceY2=var(Y2) % Variance is about 0.45 for Y2
     
-    % Calculate mean and variance for Y1 and Y2
-    mY1=mean(Y1)
-    mY2=mean(Y2)
-    varY1=var(Y1)
-    varY2=var(Y2)
+    % Theoretical mean and variance
+    meanTY1 = 0;
+    meanTY2 = 0;
+    varianceTY1 = 0.5;
+    varianceTY2 = 0.45;
     
     % Generate theoretical PDFs
     xRange = linspace(-2.5,2.5,10000);
-    Y1PT = normpdf(xRange,mY1,sqrt(varY1));
-    Y2PT = normpdf(xRange,mY2,sqrt(varY2));
-    Y1CT = normcdf(xRange,mY1,sqrt(varY1));
-    Y2CT = normcdf(xRange,mY2,sqrt(varY2));
+    Y1PT = normpdf(xRange,meanTY1,sqrt(varianceTY1));
+    Y2PT = normpdf(xRange,meanTY2,sqrt(varianceTY2));
+    Y1CT = normcdf(xRange,meanTY1,sqrt(varianceTY1));
+    Y2CT = normcdf(xRange,meanTY2,sqrt(varianceTY2));
     
     % Plot theoretical PDF
     figure(1)
@@ -107,11 +114,17 @@ clear;clc; close all;
     ylabel("Y");
 
    yRange = linspace(40,250,10000);
-   mY = mean(Y)
-   varY = var(Y)
    
-   YTP = normpdf(yRange,mY,sqrt(varY)); % Generate theoretical PDF
-   YTC = normcdf(yRange,mY,sqrt(varY)); % Generate theoretical CDF
+   % Measure mean and variance of Y
+   meanY = mean(Y)
+   varianceY = var(Y)
+   
+   % Calculate theoretical mean and variance of Y
+   meanTY = 105; % Theoretical mean
+   varianceTY = 720; % Theoretical variance
+   
+   YTP = normpdf(yRange,meanTY,sqrt(varianceTY)); % Generate theoretical PDF
+   YTC = normcdf(yRange,meanTY,sqrt(varianceTY)); % Generate theoretical CDF
 
    % Plot theoretical mean and PDF
    figure(2)
@@ -137,14 +150,15 @@ clear;clc; close all;
     
     figure(3)
     bdRange = [1:50];
-    bar(bdRange,bernDist) % Plot Bernoulli distribution
+    bar(bdRange,bernDist) % Plot Bernoulli PDF
+    title("Measured versus Theoretical PDF for the bernDist")
+    xlabel("x")
+    ylabel("f(x)");
     
-    % INCORRECT BELOW
-    mBD = 40.5 % Guesses currently
-    varBD = 7.5
+    meanTBD = 40; % Theoretical mean
+    varianceTBD = 8; % Theoretical variance
     
-    
-    BDT = normpdf(bdRange,mBD,sqrt(varBD));
+    BDT = normpdf(bdRange,meanTBD,sqrt(varianceTBD)); % Plot theoretical Gaussian PDF
     figure(3)
     hold on;
     plot(bdRange, BDT);
